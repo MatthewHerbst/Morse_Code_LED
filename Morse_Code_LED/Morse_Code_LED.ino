@@ -1,24 +1,27 @@
 /*
-  Morse Code Blink
-  Have an LED display the entered text in Morse Code
+  By Matthew Herbst - Last updated 6/19/2012
+  Morse Code LED - Have an LED display the entered text in Morse Code
+  Please feel free to contact me with bugs/suggestions at herbstmb@muohio.edu
  */
  
-// Pin 13 has an LED connected on most Arduino boards.
+//Choose the pin that has the LED connected to it
 int led = 7;
 
 //Morse Code Timings
-const int MULTIPLIER = 2.5;
+const int MULTIPLIER = 2.5; //Used to slow down the program to make dots/dashes more visble. Change as needed
 const double DOT = 92.3 * MULTIPLIER; //1 dot
 const double DASH = 276.9 * MULTIPLIER; //3 dots
 const double LETTER_PART_SPACE = 92.3 * MULTIPLIER; //1 dot
 const double LETTER_SPACE = 276.9 * MULTIPLIER; //3 dots
 const double WORD_SPACE = 646.1 * MULTIPLIER; //7 dots
-//Morse Code Timings Holder Array
+
+//Morse Code Timings Holder Array Setup
 const int NUM_CHARS = 96;
 const int MORSE_MAX_CHAR_SIZE = 7;
+
 //Array placement is based on character ASCII value
 //IF YOU ADD A NEW VALUE BE SURE TO ADD TO TO THE ACCEPTED CHAR IF CHECK
-//Note: since there is no difference between lower/upper case in Morse, only upper is used here - lower case is converted to upper using ASCII arithmatic
+//Note: since there is no difference between lower/upper case in Morse, only upper is entered here - lower case is converted to upper using ASCII arithmatic
 int TIMINGS[NUM_CHARS][MORSE_MAX_CHAR_SIZE] = {
   {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, 
   {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, 
@@ -94,12 +97,13 @@ void setup()
   pinMode(led, OUTPUT);
 }
 
+//Basic linked-list node implementation 
+//Because the size of the user input is unknown, this is easier to use than an array
 struct node
 {
   char value;
   struct node *next;
 };
-
 
 //The loop routine runs over and over again forever:
 void loop() 
@@ -135,6 +139,7 @@ void loop()
   //Go through all the nodes and display the charachters in Morse Code via the LED
   while(currentNode->next != 0)
   {
+    //TODO: Print out each char as text in console as it is being displayed by the LED
     //Serial.print(currentNode->value);
     
     //Get the ASCII value of the charachter being looked at
@@ -145,8 +150,6 @@ void loop()
     {
       ASCII = ASCII - 32;
     }
-    
-    Serial.print(ASCII);
     
     //Go through the timings for each letter
     for(int i = 0; i < MORSE_MAX_CHAR_SIZE; i++)
