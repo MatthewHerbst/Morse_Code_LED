@@ -5,15 +5,15 @@
  */
  
 //Choose the pin that has the LED connected to it
-int led = 7;
+const int led = 7;
 
 //Morse Code Timings
 const int MULTIPLIER = 2.5; //Used to slow down the program to make dots/dashes more visble. Change as needed
 const double DOT = 92.3 * MULTIPLIER; //1 dot
 const double DASH = 276.9 * MULTIPLIER; //3 dots
-const double LETTER_PART_SPACE = 92.3 * MULTIPLIER; //1 dot
-const double LETTER_SPACE = 276.9 * MULTIPLIER; //3 dots
-const double WORD_SPACE = 646.1 * MULTIPLIER; //7 dots
+const double TIMING_SPACE = 92.3 * MULTIPLIER; //1 dot - the space between dots/dashes of a single charachter
+const double CHAR_SPACE = 276.9 * MULTIPLIER; //3 dots - the space between individual charachters
+const double WORD_SPACE = 646.1; //7 dots - the space between words (when a ' ' is received)
 
 //Morse Code Timings Holder Array Setup
 const int NUM_CHARS = 96;
@@ -151,28 +151,33 @@ void loop()
       ASCII = ASCII - 32;
     }
     
-    //Go through the timings for each letter
-    for(int i = 0; i < MORSE_MAX_CHAR_SIZE; i++)
-    { 
-      if(ASCII == 32 ) //If the timing sequence is over break the loop
-      {
-        delay(WORD_SPACE);
-      }
-      else if(TIMINGS[ASCII][i] == 0) //If the charachter is a space
-      {
-        break;
-      }
-      else //Display the timing sequence on the LED
-      {
-        digitalWrite(led, HIGH);
-        delay(TIMINGS[ASCII][i]);
-        digitalWrite(led, LOW);
-        delay(LETTER_PART_SPACE);
-      }
+    //If the charachter is a space
+    if(ASCII == 32 ) 
+    {
+      delay(WORD_SPACE);
     }
+    else
+      {
+        //Go through the timing sequence for each charachter
+        for(int i = 0; i < MORSE_MAX_CHAR_SIZE; i++)
+        { 
+          if(TIMINGS[ASCII][i] == 0)//If the timing sequence is over, break the loop
+          {
+            break;
+          }
+          else //Display the timing sequence on the LED
+          {
+            digitalWrite(led, HIGH);
+            delay(TIMINGS[ASCII][i]);
+            digitalWrite(led, LOW);
+            delay(TIMING_SPACE);
+          }
+        } 
+      }
     
+    //Move to the next charachter
     currentNode = currentNode->next;
-    delay(LETTER_SPACE);
+    delay(CHAR_SPACE);
   }
 }
 
