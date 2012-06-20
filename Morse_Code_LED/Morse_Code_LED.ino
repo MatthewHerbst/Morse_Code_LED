@@ -5,21 +5,21 @@
  */
  
 //Choose the pin that has the LED connected to it
-const int led = 7;
+const int led = 13;
 
 //Morse Code Timings
 const int MULTIPLIER = 2.5; //Used to slow down the program to make dots/dashes more visble. Change as needed
 const double DOT = 92.3 * MULTIPLIER; //1 dot
 const double DASH = 276.9 * MULTIPLIER; //3 dots
-const double TIMING_SPACE = 92.3 * MULTIPLIER; //1 dot - the space between dots/dashes of a single charachter
-const double CHAR_SPACE = 276.9 * MULTIPLIER; //3 dots - the space between individual charachters
+const double TIMING_SPACE = 92.3 * MULTIPLIER; //1 dot - the space between dots/dashes of a single character
+const double CHAR_SPACE = 276.9 * MULTIPLIER; //3 dots - the space between individual characters
 const double WORD_SPACE = 646.1; //7 dots - the space between words (when a ' ' is received)
 
 //Morse Code Timings Holder Array Setup
 const int NUM_CHARS = 96;
 const int MORSE_MAX_CHAR_SIZE = 7;
 
-//Array placement is based on character ASCII value
+//Array placement is based on a character's ASCII value
 //IF YOU ADD A NEW VALUE BE SURE TO ADD TO TO THE ACCEPTED CHAR IF CHECK
 //Note: since there is no difference between lower/upper case in Morse, only upper is entered here - lower case is converted to upper using ASCII arithmatic
 int TIMINGS[NUM_CHARS][MORSE_MAX_CHAR_SIZE] = {
@@ -115,6 +115,8 @@ void loop()
   //Wait until the user has entered data
   while(Serial.available() == 0){}
   
+  //delay(5000);
+  
   //Setup the list
   struct node *head, *currentNode;
   head = (struct node*)malloc(sizeof(struct node));
@@ -136,13 +138,13 @@ void loop()
   
   Serial.println("Displaying: ");
   
-  //Go through all the nodes and display the charachters in Morse Code via the LED
+  //Go through all the nodes and display the characters in Morse Code via the LED
   while(currentNode->next != 0)
   {
     //TODO: Print out each char as text in console as it is being displayed by the LED
     //Serial.print(currentNode->value);
     
-    //Get the ASCII value of the charachter being looked at
+    //Get the ASCII value of the character being looked at
     int ASCII = currentNode->value;
     
     //Convert lower case letters to upper case
@@ -151,17 +153,18 @@ void loop()
       ASCII = ASCII - 32;
     }
     
-    //If the charachter is a space
+    //If the character is a space
     if(ASCII == 32 ) 
     {
       delay(WORD_SPACE);
     }
     else
       {
-        //Go through the timing sequence for each charachter
+        //Go through the timing sequence for each character
         for(int i = 0; i < MORSE_MAX_CHAR_SIZE; i++)
         { 
-          if(TIMINGS[ASCII][i] == 0)//If the timing sequence is over, break the loop
+          //If the timing sequence is over, break the loop
+          if(TIMINGS[ASCII][i] == 0)
           {
             break;
           }
@@ -175,14 +178,14 @@ void loop()
         } 
       }
     
-    //Move to the next charachter
+    //Move to the next character
     currentNode = currentNode->next;
     delay(CHAR_SPACE);
   }
 }
 
 /**
-//Ensure the charachter is one that has been programmed in for Morse
+//Ensure the character is one that has been programmed in for Morse
   if((userIn[i] >= 32 && userIn[i] <= 34) || userIn[i] == 36 || (userIn[i] >= 38 && userIn[i] <= 41) || (userIn[i] >= 43 && userIn[i] <= 59) 
       || userIn[i] == 61 || (userIn[i] >= 63 && userIn[i] <= 90) || userIn[i] == 95)
 **/
