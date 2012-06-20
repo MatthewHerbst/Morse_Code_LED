@@ -95,6 +95,8 @@ void setup()
 {                
   //Initialize the digital pin as an output.
   pinMode(led, OUTPUT);
+  
+   Serial.begin(9600);
 }
 
 //Basic linked-list node implementation 
@@ -109,7 +111,6 @@ struct node
 void loop() 
 { 
   //Ask the user for the string
-  Serial.begin(9600);
   Serial.println("Send text to be displayed in Morse Code. 64 chars max");
   
   //Wait until the user has entered data
@@ -136,46 +137,63 @@ void loop()
   //Move currentNode back to the start of the list
   currentNode = head;
   
+  //Display the user input back to the user
   Serial.println("Displaying: ");
+  while(currentNode->next != 0)
+  {
+    Serial.print(currentNode->value);
+    currentNode = currentNode->next;
+  }
+  Serial.println();
+  currentNode = head;
   
   //Go through all the nodes and display the characters in Morse Code via the LED
   while(currentNode->next != 0)
   {
-    //TODO: Print out each char as text in console as it is being displayed by the LED
-    //Serial.print(currentNode->value);
-    
     //Get the ASCII value of the character being looked at
     int ASCII = currentNode->value;
     
-    //Convert lower case letters to upper case
-    if(ASCII >= 97 && ASCII <= 122)
+    //Ensure the character is one that has been programmed in for Morse
+    if((ASCII >= 32 && ASCII <= 34) || ASCII == 36 || (ASCII >= 38 && ASCII <= 41) || (ASCII >= 43 && ASCII <= 59) 
+      || ASCII == 61 || (ASCII >= 63 && ASCII <= 90) || ASCII == 95)
     {
-      ASCII = ASCII - 32;
-    }
-    
-    //If the character is a space
-    if(ASCII == 32 ) 
-    {
-      delay(WORD_SPACE);
+      //Convert lower case letters to upper case
+      if(ASCII >= 97 && ASCII <= 122)
+      {
+        ASCII = ASCII - 32;
+      }
+      
+      //If the character is a space
+      if(ASCII == 32 ) 
+      {
+        delay(WORD_SPACE);
+      }
+      else
+        {
+          //Go through the timing sequence for each character
+          for(int i = 0; i < MORSE_MAX_CHAR_SIZE; i++)
+          { 
+            //If the timing sequence is over, break the loop
+            if(TIMINGS[ASCII][i] == 0)
+            {
+              break;
+            }
+            else //Display the timing sequence on the LED
+            {
+              digitalWrite(led, HIGH);
+              delay(TIMINGS[ASCII][i]);
+              digitalWrite(led, LOW);
+              delay(TIMING_SPACE);
+            }
+          } 
+        }  
     }
     else
       {
-        //Go through the timing sequence for each character
-        for(int i = 0; i < MORSE_MAX_CHAR_SIZE; i++)
-        { 
-          //If the timing sequence is over, break the loop
-          if(TIMINGS[ASCII][i] == 0)
-          {
-            break;
-          }
-          else //Display the timing sequence on the LED
-          {
-            digitalWrite(led, HIGH);
-            delay(TIMINGS[ASCII][i]);
-            digitalWrite(led, LOW);
-            delay(TIMING_SPACE);
-          }
-        } 
+        Serial.print("'");
+        Serial.print(currentNode->value);
+        Serial.print("' does not have a Morse Code timing. Skipping it.");
+        Serial.println();
       }
     
     //Move to the next character
@@ -183,10 +201,4 @@ void loop()
     delay(CHAR_SPACE);
   }
 }
-
-/**
-//Ensure the character is one that has been programmed in for Morse
-  if((userIn[i] >= 32 && userIn[i] <= 34) || userIn[i] == 36 || (userIn[i] >= 38 && userIn[i] <= 41) || (userIn[i] >= 43 && userIn[i] <= 59) 
-      || userIn[i] == 61 || (userIn[i] >= 63 && userIn[i] <= 90) || userIn[i] == 95)
-**/
         
