@@ -1,5 +1,5 @@
 /*
-  By Matthew Herbst - Last updated 6/19/2012
+  By Matthew Herbst - Last updated 6/21/2012
   Morse Code LED - Have an LED display the entered text in Morse Code
   Please feel free to contact me with bugs/suggestions at herbstmb@muohio.edu
  */
@@ -96,7 +96,8 @@ void setup()
   //Initialize the digital pin as an output.
   pinMode(led, OUTPUT);
   
-   Serial.begin(9600);
+  //Initialize Serial
+  Serial.begin(9600);
 }
 
 //Basic linked-list node implementation 
@@ -114,7 +115,10 @@ void loop()
   Serial.println("Send text to be displayed in Morse Code");
   
   //Wait until the user has entered data
-  while(Serial.available() == 0){}
+  while(Serial.available() == 0);
+  
+  //Give Serial a chance to read all the bytes
+  delay(100);
   
   //Setup the list
   struct node *root, *currentNode;
@@ -131,8 +135,6 @@ void loop()
     currentNode->value = Serial.read();
     currentNode->next = 0;
   }
-  
-  //Move currentNode back to the start of the list
   currentNode = root;
   
   //Display the user input back to the user
@@ -154,16 +156,16 @@ void loop()
     //Get the ASCII value of the character being looked at
     int ASCII = currentNode->value;
     
+    //Convert lower case letters to upper case
+    if(ASCII >= 97 && ASCII <= 122)
+    {
+      ASCII = ASCII - 32;
+    }
+    
     //Ensure the character is one that has been programmed in for Morse
     if((ASCII >= 32 && ASCII <= 34) || ASCII == 36 || (ASCII >= 38 && ASCII <= 41) || (ASCII >= 43 && ASCII <= 59) 
       || ASCII == 61 || (ASCII >= 63 && ASCII <= 90) || ASCII == 95)
-    {
-      //Convert lower case letters to upper case
-      if(ASCII >= 97 && ASCII <= 122)
-      {
-        ASCII = ASCII - 32;
-      }
-      
+    {      
       //If the character is a space
       if(ASCII == 32) 
       {
