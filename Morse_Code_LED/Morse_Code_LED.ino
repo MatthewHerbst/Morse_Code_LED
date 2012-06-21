@@ -111,45 +111,46 @@ struct node
 void loop() 
 { 
   //Ask the user for the string
-  Serial.println("Send text to be displayed in Morse Code. 64 chars max");
+  Serial.println("Send text to be displayed in Morse Code");
   
   //Wait until the user has entered data
   while(Serial.available() == 0){}
   
-  //delay(5000);
-  
   //Setup the list
-  struct node *head, *currentNode;
-  head = (struct node*)malloc(sizeof(struct node));
-  head->value = '\0';
-  head->next = 0;
-  currentNode = head;
+  struct node *root, *currentNode;
+  root = (struct node*)malloc(sizeof(struct node));
+  root->value = '\0';
+  root->next = 0;
+  currentNode = root;
   
   //Read the user input
   while(Serial.available() > 0)
   {
-    currentNode->value = Serial.read();
     currentNode->next = (struct node*)malloc(sizeof(struct node));
     currentNode = currentNode->next;
+    currentNode->value = Serial.read();
     currentNode->next = 0;
   }
   
   //Move currentNode back to the start of the list
-  currentNode = head;
+  currentNode = root;
   
   //Display the user input back to the user
   Serial.println("Displaying: ");
   while(currentNode->next != 0)
   {
-    Serial.print(currentNode->value);
     currentNode = currentNode->next;
+    Serial.print(currentNode->value);
   }
   Serial.println();
-  currentNode = head;
+  currentNode = root;  
   
   //Go through all the nodes and display the characters in Morse Code via the LED
   while(currentNode->next != 0)
   {
+    //Move to the next character
+    currentNode = currentNode->next;
+    
     //Get the ASCII value of the character being looked at
     int ASCII = currentNode->value;
     
@@ -164,7 +165,7 @@ void loop()
       }
       
       //If the character is a space
-      if(ASCII == 32 ) 
+      if(ASCII == 32) 
       {
         delay(WORD_SPACE);
       }
@@ -195,10 +196,7 @@ void loop()
         Serial.print("' does not have a Morse Code timing. Skipping it.");
         Serial.println();
       }
-    
-    //Move to the next character
-    currentNode = currentNode->next;
+      
     delay(CHAR_SPACE);
   }
 }
-        
