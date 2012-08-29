@@ -1,9 +1,10 @@
 /*
-  By Matthew Herbst - Last updated 6/21/2012
+  By Matthew Herbst - Last updated 8/28/2012
   Morse Code LED - Have an LED display the entered text in Morse Code
   Programmed for Arduino with attached breadboard/LED (easily modified for just the Arduino board by changing the pin)
   GitHub repo: https://github.com/WhtHthGdWrought/Arduino
-  Please feel free to contact me with bugs/suggestions at herbstmb@muohio.edu
+  Please feel free to contact me with bugs/suggestions:
+  herbstmb@muohio.edu | @WhtHthGdWrought | www.MatthewHerbst.com
  */
  
 //Choose the pin that has the LED connected to it
@@ -22,7 +23,7 @@ const int NUM_CHARS = 96;
 const int MORSE_MAX_CHAR_SIZE = 7;
 
 //Array placement is based on a character's ASCII value
-//IF YOU ADD A NEW VALUE BE SURE TO ADD TO TO THE ACCEPTED CHAR IF CHECK
+//IF YOU ADD A NEW VALUE BE SURE TO ADD IT TO THE ACCEPTED CHAR ERROR CHECK
 //Note: since there is no difference between lower/upper case in Morse, only upper is entered here - lower case is converted to upper using ASCII arithmatic
 int TIMINGS[NUM_CHARS][MORSE_MAX_CHAR_SIZE] = {
   {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, 
@@ -95,7 +96,7 @@ int TIMINGS[NUM_CHARS][MORSE_MAX_CHAR_SIZE] = {
 //The setup routine runs once when you press reset:
 void setup() 
 {                
-  //Initialize the digital pin as an output.
+  //Initialize the digital pin as an output
   pinMode(led, OUTPUT);
   
   //Initialize Serial
