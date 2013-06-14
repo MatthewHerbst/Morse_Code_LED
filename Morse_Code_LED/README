@@ -1,0 +1,16 @@
+This is a simple program that takes user input from the keyboard and converts
+it to Morse Code via an LED attached to an Arduino board.
+
+Future goals for this project:
+1. Convert Morse Code from light to text
+2. Create sounds for the Morse Code
+3. Convert Morse Code from sound to text (and/or light)
+4. Allow a user to "tap" in the Morse Code using a small button
+
+A video of (a slightly older version) of this code working can be found at:
+http://www.youtube.com/watch?v=thhruUu1zJk
+
+Please feel free to contact me with bugs/suggestions, or to just chat:
+herbstmb@miamioh.edu | @WhtHthGdWrought | www.MatthewHerbst.com
+
+Thanks for visiting!
