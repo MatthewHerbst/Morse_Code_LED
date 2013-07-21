@@ -1,9 +1,9 @@
 /*
-	By Matthew Herbst - Last updated 6/12/2013
+	By Matthew Herbst - Last updated 7/21/2013
 	Morse Code LED - Have an LED display the entered text in Morse Code
 	Programmed for Arduino with attached breadboard/LED 
 	(Easily modified for just the Arduino board by changing the pin)
-	GitHub repo: https://github.com/WhtHthGdWrought/Arduino
+	GitHub repo: https://github.com/MatthewHerbst/Morse_Code_LED
 	Please feel free to contact me with bugs/suggestions:
 	herbstmb@miamioh.edu | @WhtHthGdWrought | www.MatthewHerbst.com
 */
